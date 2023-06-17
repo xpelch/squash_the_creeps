@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwgxn63flt2f4"]
+
+[ext_resource type="PackedScene" uid="uid://wqov1qvvrkwo" path="res://art/player.glb" id="1_mul34"]
+[ext_resource type="Script" path="res://player/Player.cs" id="1_ubxno"]
+[ext_resource type="AnimationLibrary" uid="uid://dprkvhpua17co" path="res://float.res" id="3_b4o13"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wr0k5"]
+radius = 1.05268
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_6qe85"]
+height = 0.829302
+radius = 1.39407
+
+[node name="Player" type="CharacterBody3D"]
+collision_mask = 6
+script = ExtResource("1_ubxno")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" parent="Pivot" instance=ExtResource("1_mul34")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0114236, -0.219396, -0.0340455)
+shape = SubResource("SphereShape3D_wr0k5")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+
+[node name="MobDetector" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MobDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0357571, 0.203712, -0.0382833)
+shape = SubResource("CylinderShape3D_6qe85")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "float_2"
+playback_process_mode = 0
+playback_default_blend_time = 1.0
+libraries = {
+"": ExtResource("3_b4o13")
+}
+
+[connection signal="body_entered" from="MobDetector" to="." method="OnMobDetectorBodyEntered"]
